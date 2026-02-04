@@ -1,0 +1,10 @@
+{
+	"servers": {
+		"mailtracking-mcp": {
+			"type": "stdio",
+			"command": "node",
+			"args": ["build/index.js"]
+		}
+	},
+	"inputs": []
+}

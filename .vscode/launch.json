@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug index.js",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/index.js",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "name": "Debug index.ts",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/index.ts",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "runtimeArgs": ["--loader", "ts-node/esm"]
+        }
+    ]
+}

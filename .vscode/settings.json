@@ -1,0 +1,9 @@
+{
+    "chat.mcp.serverSampling": {
+        "mailtracking-mcp/.vscode/mcp.json: mailtracking-mcp": {
+            "allowedModels": [
+                "copilot/gpt-5-mini"
+            ]
+        }
+    }
+}
