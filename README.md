@@ -10,9 +10,9 @@ An MCP server that lets you query mailpiece tracking data stored in MongoDB.
 It exposes these tools:
 
 - **search_mailpieces_by_cust_id**: Query mailpieces and their scans by Customer ID.
-- **search_mailpieces_by_delivery_status**: Query mailpieces whose scans match a delivery status (case-insensitive exact match).
+- **search_mailpieces_by_delivery_status**: Query mailpieces whose scans match a delivery status (e.g., `DELIVERED`, `IN_TRANSIT`; case-insensitive exact match).
 - **search_mailpieces_by_tracking_number**: Query mailpieces and their scans by Tracking Number (IMB).
-- **no_match_default_tool**: Fallback response when the request does not match a tool.
+- **no_match_default_tool**: Fallback response (simple hello message) when no tool matches or when invoked without input.
 
 ---
 
@@ -71,9 +71,9 @@ Follow these steps in order:
 
 You can query mailpieces and scans with these tools:
 
-- **search_mailpieces_by_cust_id**: Provide a customer ID (string or number) to retrieve all mailpieces and their scans for that customer. Inputs containing spaces are treated as free text and return the default response instead of querying MongoDB.
+- **search_mailpieces_by_cust_id**: Provide a customer ID (string or number) to retrieve all mailpieces and their scans for that customer. Inputs containing spaces are treated as free text and return a no-match message instead of querying MongoDB.
 - **search_mailpieces_by_delivery_status**: Provide a delivery status (for example `DELIVERED`, `RETURN_DELIVERED`, `IN_TRANSIT`, `RETURN_IN_TRANSIT`, `FORWARD_IN_TRANSIT`, `FORWARD_DELIVERED`) to fetch mailpieces whose scans have that status (case-insensitive exact match).
-- **search_mailpieces_by_tracking_number**: Provide a tracking number (IMB string) to retrieve the mailpiece and its scans for that IMB. Inputs containing spaces are treated as free text and return the default response instead of querying MongoDB.
+- **search_mailpieces_by_tracking_number**: Provide a tracking number (IMB string) to retrieve the mailpiece and its scans for that IMB. Inputs containing spaces are treated as free text and return the fallback hello response instead of querying MongoDB.
 
 Supported filters for advanced queries (if you extend the code) include:
 
