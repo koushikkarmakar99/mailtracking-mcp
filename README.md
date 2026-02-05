@@ -18,6 +18,19 @@ It exposes two tools:
 
 Follow these steps in order:
 
+- To test this MCP server locally, pull the sample MongoDB migration repo and start its Docker Compose file:
+
+   ```bash
+   git pull https://github.com/koushikkarmakar99/mongodb-migration
+   cd mongodb-migration
+   docker compose up -d
+   ```
+- To insert ready made sample data run the below on a terminal:
+   ```PowerShell
+   Get-Content -Raw .\sql\seed_sample_data.sql | podman exec -i mongodb-migration-sqlserver-1 sqlcmd -S localhost -U sa -P <Password> -C -d master
+   ```
+
+
 1. **Install dependencies and build the server**
 
    ```bash
