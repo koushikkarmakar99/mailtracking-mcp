@@ -7,10 +7,12 @@ An MCP server that lets you query mailpiece tracking data stored in MongoDB.
 
 ## What this server does
 
-It exposes two tools:
+It exposes these tools:
 
 - **search_mailpieces_by_cust_id**: Query mailpieces and their scans by Customer ID.
+- **search_mailpieces_by_delivery_status**: Query mailpieces whose scans match a delivery status (e.g., `DELIVERED`, `IN_TRANSIT`; case-insensitive exact match).
 - **search_mailpieces_by_tracking_number**: Query mailpieces and their scans by Tracking Number (IMB).
+- **no_match_default_tool**: Fallback response (simple hello message) when no tool matches or when invoked without input.
 
 ---
 
@@ -38,12 +40,20 @@ Follow these steps in order:
    npm run build
    ```
 
-2. **(Optional) Point to your MongoDB**
+2. **Configure Mongo connection (required)**
 
-   If your database is not on the default local URL, set an environment variable before running:
+   The server requires these environment variables before it will start:
 
    ```bash
+   # PowerShell
    $env:MONGO_URL="mongodb://your-ip:27017"
+   $env:MONGO_DB="mailtracking"
+   $env:MONGO_COLLECTION="mailpieces_with_scans"
+
+   # Bash
+   export MONGO_URL="mongodb://your-ip:27017"
+   export MONGO_DB="mailtracking"
+   export MONGO_COLLECTION="mailpieces_with_scans"
    ```
 
 3. **Use in VS Code with MCP**
@@ -59,10 +69,13 @@ Follow these steps in order:
 
 ## How to Query
 
-You can query using either Customer ID or Tracking Number (IMB):
+You can query mailpieces and scans with these tools:
 
 - **search_mailpieces_by_cust_id**: Provide a customer ID (string or number) to retrieve all mailpieces and their scans for that customer.
+- **search_mailpieces_by_delivery_status**: Provide a delivery status (for example `DELIVERED`, `RETURN_DELIVERED`, `IN_TRANSIT`, `RETURN_IN_TRANSIT`, `FORWARD_IN_TRANSIT`, `FORWARD_DELIVERED`) to fetch mailpieces whose scans have that status (case-insensitive exact match).
 - **search_mailpieces_by_tracking_number**: Provide a tracking number (IMB string) to retrieve the mailpiece and its scans for that IMB.
+
+Free-text inputs (containing spaces) skip MongoDB entirely and respond with the default messages: customer ID requests return a no-match notice, and tracking number requests return the hello fallback.
 
 Supported filters for advanced queries (if you extend the code) include:
 
@@ -89,11 +102,13 @@ Try these in Copilot Chat:
 - "Get tracking details for customer 100001"
 - "Get tracking details for IMB 0070012345600000008106202109999"
 - "Get last scan for customer 100084"
+- "List all mailpieces with delivery status DELIVERED"
 - "Export all scans for customer 100084 as CSV"
 
 ---
 
 ## Notes
 
-- By default, results are limited to 50.
+- `search_mailpieces_by_cust_id` and `search_mailpieces_by_tracking_number` limit results to 50. The delivery status tool returns all matches by default, so responses for common statuses like `IN_TRANSIT` may be large.
 - MongoDB must be reachable from the machine running the server.
+- Responses remove internal IDs and format scan timestamps as `MM/DD/YYYY hh:mm:ss AM/PM` (UTC).
