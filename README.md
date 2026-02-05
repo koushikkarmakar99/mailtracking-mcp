@@ -71,9 +71,11 @@ Follow these steps in order:
 
 You can query mailpieces and scans with these tools:
 
-- **search_mailpieces_by_cust_id**: Provide a customer ID (string or number) to retrieve all mailpieces and their scans for that customer. Inputs containing spaces are treated as free text and return a no-match message instead of querying MongoDB.
+- **search_mailpieces_by_cust_id**: Provide a customer ID (string or number) to retrieve all mailpieces and their scans for that customer.
 - **search_mailpieces_by_delivery_status**: Provide a delivery status (for example `DELIVERED`, `RETURN_DELIVERED`, `IN_TRANSIT`, `RETURN_IN_TRANSIT`, `FORWARD_IN_TRANSIT`, `FORWARD_DELIVERED`) to fetch mailpieces whose scans have that status (case-insensitive exact match).
-- **search_mailpieces_by_tracking_number**: Provide a tracking number (IMB string) to retrieve the mailpiece and its scans for that IMB. Inputs containing spaces are treated as free text and return the fallback hello response instead of querying MongoDB.
+- **search_mailpieces_by_tracking_number**: Provide a tracking number (IMB string) to retrieve the mailpiece and its scans for that IMB.
+
+Free-text inputs (containing spaces) skip MongoDB entirely and respond with the default messages: customer ID requests return a no-match notice, and tracking number requests return the hello fallback.
 
 Supported filters for advanced queries (if you extend the code) include:
 
@@ -107,6 +109,6 @@ Try these in Copilot Chat:
 
 ## Notes
 
-- `search_mailpieces_by_cust_id` and `search_mailpieces_by_tracking_number` limit results to 50. The delivery status tool returns all matches by default.
+- `search_mailpieces_by_cust_id` and `search_mailpieces_by_tracking_number` limit results to 50. The delivery status tool returns all matches by default, so responses for common statuses like `IN_TRANSIT` may be large.
 - MongoDB must be reachable from the machine running the server.
 - Responses remove internal IDs and format scan timestamps as `MM/DD/YYYY hh:mm:ss AM/PM` (UTC).
